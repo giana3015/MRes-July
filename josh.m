@@ -99,3 +99,23 @@ function [corr] = nancorr(mainRatemap, compareRatemap)
     end
 
 end
+% === QC summary from main_NaN_counter ===
+N = numCells;                 % total place cells
+P = main_NaN_counter / N;     % coverage proportion per trial pair (10x10)
+
+% Include-diagonal stats
+mean_incl_pct = 100 * mean(P(:));       % mean cell inclusion (%)
+min_incl_pct  = 100 * min(P(:));        % min cell inclusion (%)
+pct_pairs_lt90 = 100 * mean(P(:) < 0.90); % % trial pairs with <90% inclusion
+
+fprintf('Mouse %s | N=%d | Mean inclusion=%.2f%% | Min inclusion=%.2f%% | Pairs <90%%=%.1f%%\n', ...
+        mouseID, N, mean_incl_pct, min_incl_pct, pct_pairs_lt90);
+
+% (Optional) Off-diagonal-only stats (exclude self-pairs)
+offdiag = ~eye(10);
+mean_incl_off_pct = 100 * mean(P(offdiag));
+min_incl_off_pct  = 100 * min(P(offdiag));
+pct_pairs_off_lt90 = 100 * mean(P(offdiag) < 0.90);
+
+fprintf('Off-diagonal only -> Mean=%.2f%% | Min=%.2f%% | Pairs <90%%=%.1f%%\n', ...
+        mean_incl_off_pct, min_incl_off_pct, pct_pairs_off_lt90);
