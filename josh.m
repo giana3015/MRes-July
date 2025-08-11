@@ -124,13 +124,16 @@ fprintf('Off-diagonal only -> Mean = %.2f%% | Min = %.2f%% | Pairs <90%% = %.1f%
 % Load the file
 data = load('/home/barrylab/Documents/Giana/Data/m4602/20220320/ratemaps.mat');
 
-% cellN should be a 1x55 cell array
-cellArray = data.cellN;
+% Access the cell array
+cellArray = data.ratemaps.cellN;
 
-% Extract the placeCell values from each element
+% Extract the 'placeCell' value from each struct
 placeFlags = cellfun(@(c) c.placeCell, cellArray);
 
 % Count how many are 1 (place cells)
 numPlaceCells = sum(placeFlags == 1);
 
+% Display
+fprintf('Total cells: %d\n', numel(cellArray));
 fprintf('Number of place cells: %d\n', numPlaceCells);
+fprintf('Percentage place cells: %.2f%%\n', (numPlaceCells / numel(cellArray)) * 100);
