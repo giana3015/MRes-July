@@ -120,3 +120,17 @@ pct_pairs_off_lt90 = 100 * mean(P(offdiag) < 0.90);
 
 fprintf('Off-diagonal only -> Mean = %.2f%% | Min = %.2f%% | Pairs <90%% = %.1f%%\n', ...
         mean_incl_off_pct, min_incl_off_pct, pct_pairs_off_lt90);
+
+% Load the file
+data = load('/home/barrylab/Documents/Giana/Data/m4602/20220320/ratemaps.mat');
+
+% cellN should be a 1x55 cell array
+cellArray = data.cellN;
+
+% Extract the placeCell values from each element
+placeFlags = cellfun(@(c) c.placeCell, cellArray);
+
+% Count how many are 1 (place cells)
+numPlaceCells = sum(placeFlags == 1);
+
+fprintf('Number of place cells: %d\n', numPlaceCells);
